@@ -19,10 +19,12 @@ public static class ServiceCollectionExtension
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/> Interface</param>
     /// <param name="configuration"><see cref="IConfiguration"/> Interface</param>
-    public static void AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         if (Convert.ToBoolean(configuration.GetValue<bool>("UseInMemoryDatabase")))
+        {
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TestDb"));
+        }
         else
         {
             services.AddDbContext<ApplicationDbContext>(options =>

@@ -7,14 +7,26 @@ using Domain.Common;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<User>,IApplicationDbContext
+public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+{
+    public ApplicationDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        optionsBuilder.UseSqlServer("Server=localhost;Database=UserDb;Trusted_Connection=True;MultipleActiveResultSets=true;");
+
+        return new ApplicationDbContext(optionsBuilder.Options);
+    }
+}
+
+public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
         {

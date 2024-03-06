@@ -1,6 +1,12 @@
 # UserManagement
 Simple User Management Project For User Registration and Login
 
+# How to run
++ Windows 11 + Visual Studio 2022 + SQL Server 2019
++ Set as Startup Project: API (ASP.NET Core 5.0 Web API)
++ Set as Startup Project: Infrastructure (EF Core)
++ Google Chrome: https://localhost:44359/swagger/
+
 ## Overview
 ### Domain
 This will contain all entities, enums, exceptions, interfaces, types and logic specific to the domain layer.
@@ -49,4 +55,18 @@ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:143
 #### Connect to container
 ```dockerfile
 docker exec -it [id] /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "<YourStrong@Passw0rd>"
+```
+
+# EF Core
+
++ Project: Infrastructure
++ Microsoft.EntityFrameworkCore.Tools version 5.0.9
++ Microsoft.EntityFrameworkCore.Design version 5.0.9
+
+```
+cd \src\Infrastructure
+dotnet ef migrations add RefreshTokens
+
+cd \src\Infrastructure
+dotnet ef database update
 ```
